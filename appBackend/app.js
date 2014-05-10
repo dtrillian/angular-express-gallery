@@ -7,7 +7,7 @@ var express = require('express'),
     mongodb = require('mongodb'),
     routes = require('./routes'),
     image = require('./routes/image'),
-    galerie = require('./routes/galerie'),
+    gallery = require('./routes/gallery'),
     http = require('http'),
     path = require('path'),
     mongoose = require('mongoose'), Schema = mongoose.Schema,
@@ -43,24 +43,24 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/image', image.list);
-app.get('/galerie', galerie.list);
+app.get('/gallery', gallery.list);
 
 /* API CRUD */
 
     /*Create*/
-app.post('/galerie', galerie.create);
+app.post('/gallery', gallery.create);
 app.post('/image', image.create);
 
     /* Show */
-app.get('/galerie/:id', galerie.show);
+app.get('/gallery/:id', gallery.show);
 app.get('/image/:id', image.show);
 
     /* Delete */
-app.del('/galerie', galerie.delete);
+app.del('/gallery', gallery.delete);
 app.del('/image', image.delete);
 
     /* Update */
-app.put('/galerie', galerie.update);
+app.put('/gallery', gallery.update);
 app.put('/image', image.update);
 
 /* END API CRUD */

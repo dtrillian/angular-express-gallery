@@ -1,12 +1,12 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    galeriesModel;
+    galleriesModel;
 
-function Galerie(){}
+function Gallery(){}
 
-Galerie.prototype.createDBGalerie = function() {
+Gallery.prototype.createDBGallery = function() {
 
-    var galeries = new Schema({
+    var galleries = new Schema({
         id : {type: Number , seq:0}
         , name : { type: String, required: true, index: { unique: true } }
         , host : { type: String, required: true }
@@ -16,11 +16,11 @@ Galerie.prototype.createDBGalerie = function() {
         , views : {type : Number}
     });
 
-    if(galeriesModel == undefined){
-        galeriesModel = mongoose.model('galeries', galeries);
+    if(galleriesModel == undefined){
+        galleriesModel = mongoose.model('galleries', galleries);
     }
 
-    return galeriesModel;
+    return galleriesModel;
 };
 
-module.exports = Galerie;
+module.exports = Gallery;
