@@ -1,5 +1,6 @@
 
 var Gallery = require('../model/Gallery.js'),
+    fs = require('fs'),
     galleries = new Gallery(),
     galleryToFind = galleries.createDBGallery();
 
@@ -8,6 +9,8 @@ exports.list = function(req, res) {
     galleryToFind.find({}, function(err, docs) {
         if(!err) {
             res.json(200, { galleries: docs });
+
+
         } else {
             res.json(500, { message: err });
         }
@@ -18,7 +21,8 @@ exports.create = function(req, res) {
 
     var gallery_name = req.body.gallery_name,
         gallery_description = req.body.gallery_description,
-        gallery_host = req.body.gallery_host;
+        gallery_host = req.body.gallery_host,
+        gallery_img = req.body.gallery_img;
 
     galleryToFind.findOne({ name: { $regex: new RegExp(gallery_name, "i") } },
         function(err, doc) {
@@ -29,12 +33,16 @@ exports.create = function(req, res) {
                 newGallery.name = gallery_name;
                 newGallery.description = gallery_description;
                 newGallery.host = gallery_host;
+                newGallery.img.data = gallery_img;
+                newGallery.img.contentType = 'image/png';
 
                 newGallery.save(function(err) {
 
                     if(!err) {
+                        res.redirect('/');
                         return res.json(201, {message: "Gallery created with name: " +
                             newGallery.name });
+
                     } else {
                         return res.json(500, {message: "Could not create gallery.Error: " + err});
                     }

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    galleriesModel;
+    galleriesModel
 
 function Gallery(){}
 
@@ -14,6 +14,7 @@ Gallery.prototype.createDBGallery = function() {
         , description : { type: String, required: true }
         , elements : { type: Number}
         , views : {type : Number}
+        , img: { data: Buffer, contentType: String }
     });
 
     if(galleriesModel == undefined){
