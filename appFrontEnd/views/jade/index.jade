@@ -29,10 +29,10 @@ block content
     h2.text-center.text-primary All gallery
 
     div(ng-controller='IndexTypeCtrl')
-        ul(ng-repeat-start="gallery in galleries")
+        ul(ng-repeat="gallery in galleries")
             {{gallery}}
 
-        //li(ng-repeat="galleries in gallery") {{gallery.name}} -
+        //li(ng-repeat="galleries in ") {{gallery.name}} -
        // {{gallery}}
 
     #modalImage.modal.fade
