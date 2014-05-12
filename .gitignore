@@ -1,2 +1,3 @@
+node_modules/*
 appBackEnd/node_modules/*
 appFrontEnd/node_modules/*

@@ -1,11 +1,11 @@
+var gulp = require('gulp');
 var jade = require('gulp-jade');
 
 gulp.task('default', function() {
-    var YOUR_LOCALS = {};
 
-    gulp.src('/views/*.jade')
+    gulp.src('./views/jade/*.jade')
         .pipe(jade({
-            locals: YOUR_LOCALS
+            debug: true
         }))
-        .pipe(gulp.dest('/viewsInHtml/'))
+        .pipe(gulp.dest('./views/html'))
 });
