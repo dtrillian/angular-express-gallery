@@ -7,6 +7,9 @@
   },
   "dependencies": {
     "express": "3.5.0",
-    "jade": "*"
+    "jade": "*",
+    "mongodb": "^1.4.3",
+    "mongoose": "^3.8.9",
+    "pow-mongoose-fixtures": "^0.3.0"
   }
 }
