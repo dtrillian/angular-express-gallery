@@ -65,9 +65,13 @@ app.put('/image', image.update);
 
 /* END API CRUD */
 
-function GalleryTwoCtrl($scope, $http) {
-    $scope.gallery = "test";
-}
+/*app.configure(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl:'../appFrontEnd/views/index.jade',
+            controller:'../appFrontEnd/public/controllers.js'
+        })
+});*/
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

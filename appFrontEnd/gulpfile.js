@@ -1,5 +1,11 @@
-var gulp = require('gulp');
+var jade = require('gulp-jade');
 
 gulp.task('default', function() {
-    // place code for your default task here
+    var YOUR_LOCALS = {};
+
+    gulp.src('/views/*.jade')
+        .pipe(jade({
+            locals: YOUR_LOCALS
+        }))
+        .pipe(gulp.dest('/viewsInHtml/'))
 });
