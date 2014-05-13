@@ -29,8 +29,13 @@ block content
     h2.text-center.text-primary All gallery
 
     div(ng-controller='IndexTypeCtrl')
-        ul(ng-repeat="gallery in galleries")
-            {{gallery}}
+        .container.marketing
+            .row.text-center
+                .col-lg-4(ng-repeat="gallery in galleries")
+                    img.img-circle(src='{{gallery.img}}')
+                    h2 {{gallery.name}}
+                    p {{gallery.description}}
+                    p.btn.btn-default.marginBottomTen(href='{{gallery._id}}', role='button') Show
 
         //li(ng-repeat="galleries in ") {{gallery.name}} -
        // {{gallery}}
@@ -67,7 +72,7 @@ block content
                     button(type="button", class="close", data-dismiss="modal") x
                     h3.text-center.text-primary Add gallery
                 .modal-body
-                    form(action='/gallery',method='post')
+                    form(action='http://localhost:8080/gallery',method='post')
                         p.text-center
                             input.form-control(id='name', name='gallery_name',type='text',placeholder='Name')
                         p.text-center

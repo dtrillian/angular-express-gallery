@@ -2,7 +2,7 @@ var Image = require('../model/Image.js'),
     image = new Image(),
     imageToFind = image.createDBImage();
 
-exports.list = function(req, res) {
+exports.list = function(req, res, next) {
 
     imageToFind.find({}, function(err, docs) {
         if(!err) {

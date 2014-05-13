@@ -10,6 +10,7 @@ var express = require('express'),
     gallery = require('./routes/gallery'),
     http = require('http'),
     path = require('path'),
+    authorizeDomain = 'http://bsexercice.dev/',
     mongoose = require('mongoose'), Schema = mongoose.Schema,
     fixtures = require('pow-mongoose-fixtures');
 
@@ -26,8 +27,8 @@ var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 8080);
-app.set('views', path.join('./appFrontEnd/views'));
-app.set('view engine', 'jade');
+app.set('views', path.join('./appFrontEnd/views/html'));
+app.set('view engine', 'html');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -41,9 +42,17 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+app.all('http://bsexercice.dev', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", 'http://bsexercice.dev');
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
+
 app.get('/', routes.index);
 app.get('/image', image.list);
 app.get('/gallery', gallery.list);
+
+
 
 /* API CRUD */
 
@@ -65,13 +74,6 @@ app.put('/image', image.update);
 
 /* END API CRUD */
 
-/*app.configure(function ($routeProvider) {
-    $routeProvider
-        .when('/', {
-            templateUrl:'../appFrontEnd/views/index.jade',
-            controller:'../appFrontEnd/public/controllers.js'
-        })
-});*/
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
