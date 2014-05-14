@@ -7,7 +7,7 @@ var app = angular.module("Contestnco", ['ngRoute']);
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl:'./appFrontEnd/views/index.html',
+            templateUrl:'./appFrontEnd/views/html/index.html',
             controller:IndexTypeCtrl
         })
 });

@@ -4,13 +4,11 @@ var Gallery = require('../model/Gallery.js'),
     galleries = new Gallery(),
     galleryToFind = galleries.createDBGallery();
 
-exports.list = function(req, res) {
+exports.list = function(req, res, next) {
 
     galleryToFind.find({}, function(err, docs) {
         if(!err) {
             res.json(200, { galleries: docs });
-
-
         } else {
             res.json(500, { message: err });
         }
@@ -39,7 +37,7 @@ exports.create = function(req, res) {
                 newGallery.save(function(err) {
 
                     if(!err) {
-                        res.redirect('/');
+                      //  res.redirect('/');
                         return res.json(201, {message: "Gallery created with name: " +
                             newGallery.name });
 

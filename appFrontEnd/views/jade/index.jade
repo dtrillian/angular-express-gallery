@@ -1,0 +1,86 @@
+extends layout
+
+block content
+    .navbar.navbar-fixed-top.navbar-inverse
+        .container
+            .navbar-header
+                button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-responsive-collapse')
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a.navbar-brand(href='#')
+                    | Contestnco
+            .collapse.navbar-collapse
+                ul.nav.navbar-nav
+                    li.active
+                        a(href='#') Home
+                    li
+                        a(href='about') About
+                    li
+                        a(href='contact') Contact
+
+    .jumbotron.text-center
+        h1 Contestnco
+        p.lead  You can create a gallery and add photo !
+        p.btn.btn-lg.btn-success(role='button', href="#modalImage", data-toggle="modal") Add photo
+        p.inline-block or
+        p.btn.btn-lg.btn-primary(role='button', href="#modalGallery", data-toggle="modal") Add gallery
+
+    h2.text-center.text-primary All gallery
+
+    div(ng-controller='IndexTypeCtrl')
+        .container.marketing
+            .row.text-center
+                .col-lg-4(ng-repeat="gallery in galleries")
+                    img.img-circle(src='{{gallery.img}}')
+                    h2 {{gallery.name}}
+                    p {{gallery.description}}
+                    p.btn.btn-default.marginBottomTen(href='{{gallery._id}}', role='button') Show
+
+        //li(ng-repeat="galleries in ") {{gallery.name}} -
+       // {{gallery}}
+
+    #modalImage.modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button(type="button", class="close", data-dismiss="modal") x
+                    h3.text-center.text-success Add photo
+                .modal-body
+                    form(action='/image',method='post')
+                        p.text-center
+                            input.form-control(id='name', name='img_name',type='text',placeholder='Name')
+                        p.text-center
+                            input.form-control(id='author', name='img_author',type='text',placeholder='Author')
+                        p.text-center
+                            textarea.form-control(id='description', name='img_description',type='text',placeholder='Description')
+                        p.text-center
+                            select.form-control(id='galleryId', name='img_gallery')
+                                option  Select gallery
+                                option
+                                option
+                        p.text-center
+                            input.form-control(id='image', name='image',type='file',placeholder='Your photo')
+                        .modal-footer
+                            button.btn.btn-default(type="button" data-dismiss="modal") Close
+                            button.btn.btn-primary(type="submit") Save
+
+    #modalGallery.modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button(type="button", class="close", data-dismiss="modal") x
+                    h3.text-center.text-primary Add gallery
+                .modal-body
+                    form(action='http://localhost:8080/gallery',method='post')
+                        p.text-center
+                            input.form-control(id='name', name='gallery_name',type='text',placeholder='Name')
+                        p.text-center
+                            input.form-control(id='author', name='gallery_host',type='text',placeholder='Host')
+                        p.text-center
+                            textarea.form-control(id='description', name='gallery_description',type='text',placeholder='Description')
+                        p.text-center
+                            input.form-control(id='image', name='image',type='file',placeholder='An image')
+                        .modal-footer
+                            button.btn.btn-default(type="button" data-dismiss="modal") Close
+                            button.btn.btn-primary(type="submit") Save
