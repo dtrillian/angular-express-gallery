@@ -4,6 +4,7 @@ var Gallery = require('../model/Gallery.js'),
     galleries = new Gallery(),
     galleryToFind = galleries.createDBGallery();
 
+
 exports.list = function(req, res, next) {
 
     galleryToFind.find({}, function(err, docs) {
@@ -20,7 +21,9 @@ exports.create = function(req, res) {
     var gallery_name = req.body.gallery_name,
         gallery_description = req.body.gallery_description,
         gallery_host = req.body.gallery_host,
-        gallery_img = req.body.gallery_img;
+        gallery_img = req.files.gallery_img;
+        console.log('TOTOT ' +gallery_img.name);
+    console.log('BIBI');
 
     galleryToFind.findOne({ name: { $regex: new RegExp(gallery_name, "i") } },
         function(err, doc) {
@@ -31,8 +34,7 @@ exports.create = function(req, res) {
                 newGallery.name = gallery_name;
                 newGallery.description = gallery_description;
                 newGallery.host = gallery_host;
-                newGallery.img.data = gallery_img;
-                newGallery.img.contentType = 'image/png';
+                newGallery.set('gallery_img.file', gallery_img);
 
                 newGallery.save(function(err) {
 

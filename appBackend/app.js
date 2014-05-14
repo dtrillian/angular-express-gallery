@@ -9,10 +9,12 @@ var express = require('express'),
     image = require('./routes/image'),
     gallery = require('./routes/gallery'),
     http = require('http'),
-    path = require('path'),
-    authorizeDomain = 'http://bsexercice.dev/',
+    domainAllow = ['*','http://bsexercice.dev'],
+    authorizeDomain = domainAllow.join(),
     mongoose = require('mongoose'), Schema = mongoose.Schema,
-    fixtures = require('pow-mongoose-fixtures');
+    fixtures = require('pow-mongoose-fixtures'),
+    multipart = require('connect-multiparty'),
+    multipartMiddleware = multipart();
 
 mongoose.connect('mongodb://localhost/bsdev-exo');
 
@@ -27,23 +29,24 @@ var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 8080);
-app.set('views', path.join('./appFrontEnd/views/html'));
-app.set('view engine', 'html');
+//app.set('views', path.join('./appFrontEnd/views/html'));
+//app.set('view engine', 'html');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
-app.use(express.static(path.join('./appFrontEnd/public')));
+//app.use(express.static(path.join('./appFrontEnd/public')));
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.all('http://bsexercice.dev', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", 'http://bsexercice.dev');
+app.all(authorizeDomain, function(req, res, next) {
+    console.log(authorizeDomain);
+    res.header("Access-Control-Allow-Origin", authorizeDomain);
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
 });
@@ -57,16 +60,16 @@ app.get('/gallery', gallery.list);
 /* API CRUD */
 
     /*Create*/
-app.post('/gallery', gallery.create);
-app.post('/image', image.create);
+app.post('/gallery/create',multipartMiddleware, gallery.create);
+app.post('/image/create', image.create);
 
     /* Show */
 app.get('/gallery/:id', gallery.show);
 app.get('/image/:id', image.show);
 
     /* Delete */
-app.del('/gallery', gallery.delete);
-app.del('/image', image.delete);
+app.del('/gallery/delete', gallery.delete);
+app.del('/image/delete', image.delete);
 
     /* Update */
 app.put('/gallery', gallery.update);

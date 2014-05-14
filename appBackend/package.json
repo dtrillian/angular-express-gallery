@@ -10,6 +10,8 @@
     "jade": "*",
     "mongodb": "^1.4.3",
     "mongoose": "^3.8.9",
-    "pow-mongoose-fixtures": "^0.3.0"
+    "pow-mongoose-fixtures": "^0.3.0",
+    "connect-multiparty": "^1.0.3",
+    "mongoose-thumbnail": "^0.0.1"
   }
 }
