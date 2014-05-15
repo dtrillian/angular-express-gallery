@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -64,8 +63,13 @@ app.get('/gallery', gallery.list);
 /* API CRUD */
 
 /*Create*/
+<<<<<<< HEAD
 app.post('/gallery/create',multipartMiddleware, gallery.create);
 app.post('/image/create',multipartMiddleware, image.create);
+=======
+app.post('/gallery/create', multipartMiddleware, gallery.create);
+app.post('/image/create', image.create);
+>>>>>>> FETCH_HEAD
 
 /* Show */
 app.get('/gallery/:id', gallery.show);
@@ -88,6 +92,6 @@ app.get('/upload/galleriePhoto/:id', function(req,res){
 });
 
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
 });
