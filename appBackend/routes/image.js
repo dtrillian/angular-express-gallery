@@ -1,6 +1,7 @@
 var Image = require('../model/Image.js'),
     image = new Image(),
-    imageToFind = image.createDBImage();
+    imageToFind = image.createDBImage(),
+    fs = require('fs');
 
 exports.list = function(req, res, next) {
 
@@ -17,7 +18,9 @@ exports.create = function(req, res) {
 
     var img_name = req.body.img_name,
         img_author = req.body.img_author,
-        img_description = req.body.img_description;
+        img_description = req.body.img_description,
+        img_gallery = req.body.img_gallery,
+        tmp_path = req.files.image_img.path;
 
     imageToFind.findOne({ name: { $regex: new RegExp(img_name, "i") } },
         function(err, doc) {
@@ -28,12 +31,24 @@ exports.create = function(req, res) {
                 newImg.name = img_name;
                 newImg.author = img_author;
                 newImg.description = img_description;
+                newImg.galleryId = img_gallery;
+
+                var img_path = './Uploads/images/'+ newImg._id+ ".png";
+
+                fs.rename(tmp_path, img_path, function(err) {
+                    if (err) throw err;
+                    fs.unlink(tmp_path, function() {
+                        if (err) throw err;
+                    });
+                });
+
+                newImg.path = img_path;
 
                 newImg.save(function(err) {
 
                     if(!err) {
-                        return res.json(201, {message: "Image created with name: " +
-                            newImg.name });
+                        return res.json(201, {message: "Image add with name: " +
+                            newImg.name});
                     } else {
                         return res.json(500, {message: "Could not store Image.Error: " + err});
                     }

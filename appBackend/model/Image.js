@@ -9,6 +9,8 @@ Image.prototype.createDBImage = function() {
         , author : { type: String, required: true }
         , date_created : { type: Date, required: true, default: Date.now}
         , description : { type: String, required: true }
+        , path : {type: String}
+        , galleryId: {type: Schema.ObjectId}
     });
 
     var imagesModel = mongoose.model('images', images);

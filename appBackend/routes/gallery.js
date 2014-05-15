@@ -1,8 +1,8 @@
 
 var Gallery = require('../model/Gallery.js'),
-    fs = require('fs'),
     galleries = new Gallery(),
-    galleryToFind = galleries.createDBGallery();
+    galleryToFind = galleries.createDBGallery(),
+    fs = require('fs');
 
 
 exports.list = function(req, res, next) {
@@ -21,9 +21,7 @@ exports.create = function(req, res) {
     var gallery_name = req.body.gallery_name,
         gallery_description = req.body.gallery_description,
         gallery_host = req.body.gallery_host,
-        gallery_img = req.files.gallery_img;
-        console.log('TOTOT ' +gallery_img.name);
-    console.log('BIBI');
+        tmp_path = req.files.gallery_img.path;
 
     galleryToFind.findOne({ name: { $regex: new RegExp(gallery_name, "i") } },
         function(err, doc) {
@@ -34,7 +32,20 @@ exports.create = function(req, res) {
                 newGallery.name = gallery_name;
                 newGallery.description = gallery_description;
                 newGallery.host = gallery_host;
-                newGallery.set('gallery_img.file', gallery_img);
+
+                var gallery_path = './Uploads/photoGalleries/'+ newGallery._id+ ".png";
+
+
+                fs.rename(tmp_path, gallery_path, function(err) {
+                    if (err) throw err;
+                    fs.unlink(tmp_path, function() {
+                        if (err) throw err;
+                      //  res.json('File uploaded to: ' + gallery_path + ' - ' + req.files.gallery_img.size + ' bytes');
+                    });
+                });
+
+
+                newGallery.path = gallery_path;
 
                 newGallery.save(function(err) {
 

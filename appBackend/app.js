@@ -9,14 +9,18 @@ var express = require('express'),
     image = require('./routes/image'),
     gallery = require('./routes/gallery'),
     http = require('http'),
-    domainAllow = ['*','http://bsexercice.dev'],
+    domainAllow = ['*'],
     authorizeDomain = domainAllow.join(),
-    mongoose = require('mongoose'), Schema = mongoose.Schema,
+    mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
     fixtures = require('pow-mongoose-fixtures'),
     multipart = require('connect-multiparty'),
-    multipartMiddleware = multipart();
+    multipartMiddleware = multipart(),
+    bodyParser = require('body-parser'),
+    photoGalleries = __dirname+"/Uploads/photoGalleries/";
 
 mongoose.connect('mongodb://localhost/bsdev-exo');
+
 
 /* Load Fixtures */
 fixtures.load({
@@ -37,16 +41,16 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
-//app.use(express.static(path.join('./appFrontEnd/public')));
+app.use(express.bodyParser({uploadDir:'./Uploads'}));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
-app.all(authorizeDomain, function(req, res, next) {
+app.all("*", function(req, res, next) {
     console.log(authorizeDomain);
-    res.header("Access-Control-Allow-Origin", authorizeDomain);
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
 });
@@ -59,23 +63,29 @@ app.get('/gallery', gallery.list);
 
 /* API CRUD */
 
-    /*Create*/
+/*Create*/
 app.post('/gallery/create',multipartMiddleware, gallery.create);
-app.post('/image/create', image.create);
+app.post('/image/create',multipartMiddleware, image.create);
 
-    /* Show */
+/* Show */
 app.get('/gallery/:id', gallery.show);
 app.get('/image/:id', image.show);
 
-    /* Delete */
+/* Delete */
 app.del('/gallery/delete', gallery.delete);
 app.del('/image/delete', image.delete);
 
-    /* Update */
+/* Update */
 app.put('/gallery', gallery.update);
 app.put('/image', image.update);
 
 /* END API CRUD */
+
+app.get('/upload/galleriePhoto/:id', function(req,res){
+    var uid = req.params.id;
+    console.log('./Uploads/photoGalleries/' + uid + '.png');
+    res.sendfile('./Uploads/photoGalleries/' + uid + '.png');
+});
 
 
 http.createServer(app).listen(app.get('port'), function(){

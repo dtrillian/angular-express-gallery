@@ -32,7 +32,7 @@ block content
         .container.marketing
             .row.text-center
                 .col-lg-4(ng-repeat="gallery in galleries")
-                    img.img-circle(src="http://localhost:8080/{{ picture.photo.thumb.rel }}")
+                    img.img-circle.set-mini-size(src="http://localhost:8080/upload/galleriePhoto/{{ gallery._id }}")
                     h2 {{gallery.name}}
                     p {{gallery.description}}
                     p.btn.btn-default.marginBottomTen(href='{{gallery._id}}', role='button') Show
@@ -47,7 +47,7 @@ block content
                     button(type="button", class="close", data-dismiss="modal") x
                     h3.text-center.text-success Add photo
                 .modal-body
-                    form(action='/image/create',method='post')
+                    form(action='http://localhost:8080/image/create',method='post', enctype='multipart/form-data')
                         p.text-center
                             input.form-control(id='name', name='img_name',type='text',placeholder='Name')
                         p.text-center
@@ -55,12 +55,10 @@ block content
                         p.text-center
                             textarea.form-control(id='description', name='img_description',type='text',placeholder='Description')
                         p.text-center
-                            select.form-control(id='galleryId', name='img_gallery')
-                                option  Select gallery
-                                option
-                                option
+                            select.form-control(id='galleryId', name='img_gallery', ng-controller='IndexTypeCtrl')
+                                option(ng-repeat="gallery in galleries", value="{{gallery._id}}") {{gallery.name}}
                         p.text-center
-                            input.form-control(id='image', name='image',type='file',placeholder='Your photo')
+                            input.form-control(id='image', name='image_img',type='file',placeholder='Your photo')
                         .modal-footer
                             button.btn.btn-default(type="button" data-dismiss="modal") Close
                             button.btn.btn-primary(type="submit") Save

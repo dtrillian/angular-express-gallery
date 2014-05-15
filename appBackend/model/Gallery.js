@@ -1,16 +1,6 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    galleriesModel,
-    path = require('path'),
-    thumbnailPluginLib = require('mongoose-thumbnail'),
-    thumbnailPlugin = thumbnailPluginLib.thumbnailPlugin,
-    make_upload_to_model = thumbnailPluginLib.make_upload_to_model,
-    uploads_base = path.join("./imgGalleries"),
-    uploads = path.join(uploads_base, "photosGalleries");
-
-console.log("DIRNAME : " + uploads_base);
-console.log('A3E : ' + uploads);
-
+    galleriesModel;
 
 function Gallery(){}
 
@@ -24,14 +14,7 @@ Gallery.prototype.createDBGallery = function() {
         , description : { type: String, required: true }
         , elements : { type: Number}
         , views : {type : Number}
-    });
-
-    galleries.plugin(thumbnailPlugin, {
-        name: "photo",
-        inline: false,
-        save: true,
-        upload_to: make_upload_to_model(uploads, 'photos'),
-        relative_to: uploads_base
+        , path:{type: String}
     });
 
     if(galleriesModel == undefined){
