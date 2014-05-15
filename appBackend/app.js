@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -9,9 +8,10 @@ var express = require('express'),
     image = require('./routes/image'),
     gallery = require('./routes/gallery'),
     http = require('http'),
-    domainAllow = ['*','http://bsexercice.dev'],
+    domainAllow = ['*'],
     authorizeDomain = domainAllow.join(),
-    mongoose = require('mongoose'), Schema = mongoose.Schema,
+    mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
     fixtures = require('pow-mongoose-fixtures'),
     multipart = require('connect-multiparty'),
     multipartMiddleware = multipart();
@@ -41,7 +41,7 @@ app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
 app.all(authorizeDomain, function(req, res, next) {
@@ -59,25 +59,25 @@ app.get('/gallery', gallery.list);
 
 /* API CRUD */
 
-    /*Create*/
-app.post('/gallery/create',multipartMiddleware, gallery.create);
+/*Create*/
+app.post('/gallery/create', multipartMiddleware, gallery.create);
 app.post('/image/create', image.create);
 
-    /* Show */
+/* Show */
 app.get('/gallery/:id', gallery.show);
 app.get('/image/:id', image.show);
 
-    /* Delete */
+/* Delete */
 app.del('/gallery/delete', gallery.delete);
 app.del('/image/delete', image.delete);
 
-    /* Update */
+/* Update */
 app.put('/gallery', gallery.update);
 app.put('/image', image.update);
 
 /* END API CRUD */
 
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
 });
