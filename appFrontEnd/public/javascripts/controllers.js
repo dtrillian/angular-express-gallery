@@ -11,22 +11,24 @@ function IndexTypeCtrl($scope, $http) {
     })
 
     $scope.orderProp = 'id';
-};
 
-function NewGalleryCtrl($scope, $http) {
-
-    $scope.createGallery = function(){
+    $scope.createGallery = function() {
 
         var formData = new FormData();
         formData.append('file', $scope.file);
 
-        var data = { gallery_name: $scope.gallery_name, gallery_host: $scope.gallery_host,
-            gallery_description: $scope.gallery_description};
-        $http.post(baseURL+ 'gallery/create', data,
-            {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': 'multipart/data-form'}
-        }).success(function(data,status, headers) {
+        var data = {
+            gallery_name: $scope.gallery_name,
+            gallery_host: $scope.gallery_host,
+            gallery_description: $scope.gallery_description
+        };
+
+        $http.post(baseURL + 'gallery/create', data, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': 'multipart/data-form'
+            }
+        }).success(function(data, status, headers) {
             $http.get(baseURL + 'gallery').success(function(indexTypes) {
                 $scope.galleries = indexTypes.galleries;
             })
@@ -35,7 +37,7 @@ function NewGalleryCtrl($scope, $http) {
 
 };
 
-function DisplayImagesByGallery($scope,$http,$routeParams) {
+function DisplayImagesByGallery($scope, $http, $routeParams) {
 
     var id = $routeParams.bar;
     $http.get(baseURL + 'gallery/' + id).success(function(displayImages) {

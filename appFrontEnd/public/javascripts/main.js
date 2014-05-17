@@ -2,7 +2,7 @@
  * Created by MehdiBeldjilali on 12/05/2014.
  */
 
-var app = angular.module("Contestnco", ['ngRoute']);
+var app = angular.module("Contestnco", ['ngRoute', 'ngCookies']);
 
 // Enable CORS Angular
 /*app.config(['$httpProvider', function($httpProvider) {
@@ -11,33 +11,37 @@ var app = angular.module("Contestnco", ['ngRoute']);
 }
 ]);*/
 
-app.config(function ($routeProvider) {
+app.config(function($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl:'./appFrontEnd/views/html/index.html',
-            controller:IndexTypeCtrl
+            templateUrl: '/views/html/index.html',
+            controller: IndexTypeCtrl
         })
         .when('/gallery/:id', {
-            templateUrl:'./appFrontEnd/views/html/gallery.html',
-            controller:DisplayImagesByGallery
-        })
-    ;
-
+            templateUrl: '/views/html/gallery.html',
+            controller: DisplayImagesByGallery
+        });
 });
 
-app.directive('fileInput', ['$parse', function($parse){
-    return{
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var model = $parse(attrs.fileInput),
-                modelSetter = model.assign;
+app.run(function($http, $cookies) {
+    $http.defaults.headers.post['x-csrf-token'] = $cookies._csrf;
+});
 
-            element.bind('change', function(){
-                scope.$apply(function(){
-                    modelSetter(scope, element[0].files[0]);
+app.directive('fileInput', ['$parse',
+    function($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileInput),
+                    modelSetter = model.assign;
+
+                element.bind('change', function() {
+                    scope.$apply(function() {
+                        modelSetter(scope, element[0].files[0]);
+                    });
                 });
-            });
-    }
-    }
+            }
+        }
 
-}]);
+    }
+]);
