@@ -14,6 +14,18 @@ exports.list = function(req, res, next) {
     });
 }
 
+exports.showElementsByGallery = function(req, res, next) {
+
+    var id = req.params.id;
+    imageToFind.find({galleryId: id}, function(err, docs) {
+        if(!err) {
+            res.json(200, { images: docs });
+        } else {
+            res.json(500, { message: err });
+        }
+    });
+}
+
 exports.create = function(req, res) {
 
     var img_name = req.body.img_name,
@@ -22,7 +34,7 @@ exports.create = function(req, res) {
         img_gallery = req.body.img_gallery,
         tmp_path = req.files.image_img.path;
 
-    imageToFind.findOne({ name: { $regex: new RegExp(img_name, "i") } },
+    imageToFind.findOne({ name: { $regex: new RegExp(img_name, 'i') } },
         function(err, doc) {
             if(!err && !doc) {
 
@@ -33,7 +45,7 @@ exports.create = function(req, res) {
                 newImg.description = img_description;
                 newImg.galleryId = img_gallery;
 
-                var img_path = './Uploads/images/'+ newImg._id+ ".png";
+                var img_path = './uploads/images/'+ newImg._id+ '.png';
 
                 fs.rename(tmp_path, img_path, function(err) {
                     if (err) throw err;
@@ -47,17 +59,17 @@ exports.create = function(req, res) {
                 newImg.save(function(err) {
 
                     if(!err) {
-                        return res.json(201, {message: "Image add with name: " +
+                        return res.json(201, {message: 'Image add with name: ' +
                             newImg.name});
                     } else {
-                        return res.json(500, {message: "Could not store Image.Error: " + err});
+                        return res.json(500, {message: 'Could not store Image.Error: ' + err});
                     }
                 });
 
             } else if(!err) {
 
-                return res.json(403, {message: "Image with that name already exists,"+
-                    "please update instead of create or create a new image with a different name."});
+                return res.json(403, {message: 'Image with that name already exists,'+
+                    'please update instead of create or create a new image with a different name.'});
 
             } else {
                 return  res.json(500, { message: err});
@@ -72,9 +84,9 @@ exports.show = function(req, res) {
         if(!err && doc) {
             res.json(200, doc);
         } else if(err) {
-            res.json(500, { message: "Error loading Image." + err});
+            res.json(500, { message: 'Error loading Image.' + err});
         } else {
-            res.json(404, { message: "Image not found."});
+            res.json(404, { message: 'Image not found.'});
         }
     });
 };
@@ -85,11 +97,11 @@ exports.delete = function(req, res) {
     imageToFind.findById(id, function(err, doc) {
         if(!err && doc) {
             doc.remove();
-            res.json(200, { message: "Image removed."});
+            res.json(200, { message: 'Image removed.'});
         } else if(!err) {
-            res.json(404, { message: "Could not find image."});
+            res.json(404, { message: 'Could not find image.'});
         } else {
-            res.json(403, {message: "Could not delete image. " + err});
+            res.json(403, {message: 'Could not delete image. ' + err});
         }
     });
 };
@@ -107,17 +119,17 @@ exports.update = function(req, res) {
             doc.description = img_description;
             doc.save(function(err) {
                 if(!err) {
-                    res.json(200, {message: "Image updated: " +
+                    res.json(200, {message: 'Image updated: ' +
                         img_name});
                 } else {
-                    res.json(500, {message: "Could not update image. " +
+                    res.json(500, {message: 'Could not update image. ' +
                         err});
                 }
             });
         } else if(!err) {
-            res.json(404, { message: "Could not find image."});
+            res.json(404, { message: 'Could not find image.'});
         } else {
-            res.json(500, { message: "Could not update image. " +
+            res.json(500, { message: 'Could not update image. ' +
                 err});
         }
     });

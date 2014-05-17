@@ -5,12 +5,12 @@ function Image(){}
 
 Image.prototype.createDBImage = function() {
     var images = new Schema({
-        name : { type: String, required: true, trim: true}
-        , author : { type: String, required: true }
-        , date_created : { type: Date, required: true, default: Date.now}
-        , description : { type: String, required: true }
-        , path : {type: String}
-        , galleryId: {type: Schema.ObjectId}
+        name : { type: String, required: true, trim: true},
+        author : { type: String, required: true },
+        date_created : { type: Date, required: true, default: Date.now},
+        description : { type: String, required: true },
+        path : {type: String},
+        galleryId: {type: Schema.ObjectId}
     });
 
     var imagesModel = mongoose.model('images', images);

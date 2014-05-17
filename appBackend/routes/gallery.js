@@ -20,10 +20,13 @@ exports.create = function(req, res) {
 
     var gallery_name = req.body.gallery_name,
         gallery_description = req.body.gallery_description,
-        gallery_host = req.body.gallery_host,
-        tmp_path = req.files.gallery_img.path;
+        gallery_host = req.body.gallery_host;
+      //  tmp_path = req;
+/*    for(key in tmp_path){
+        console.log('BADABOUM' +key);
+    }*/
 
-    galleryToFind.findOne({ name: { $regex: new RegExp(gallery_name, "i") } },
+    galleryToFind.findOne({ name: { $regex: new RegExp(gallery_name, 'i') } },
         function(err, doc) {
             if(!err && !doc) {
 
@@ -33,36 +36,34 @@ exports.create = function(req, res) {
                 newGallery.description = gallery_description;
                 newGallery.host = gallery_host;
 
-                var gallery_path = './Uploads/photoGalleries/'+ newGallery._id+ ".png";
+              //  var gallery_path = './uploads/photoGalleries/'+ newGallery._id+ '.png';
 
 
-                fs.rename(tmp_path, gallery_path, function(err) {
+               /* fs.rename(tmp_path, gallery_path, function(err) {
                     if (err) throw err;
                     fs.unlink(tmp_path, function() {
                         if (err) throw err;
-                      //  res.json('File uploaded to: ' + gallery_path + ' - ' + req.files.gallery_img.size + ' bytes');
                     });
-                });
+                });*/
 
 
-                newGallery.path = gallery_path;
+                //newGallery.path = gallery_path;
 
                 newGallery.save(function(err) {
 
                     if(!err) {
-                      //  res.redirect('/');
-                        return res.json(201, {message: "Gallery created with name: " +
+                        return res.json(201, {message: 'Gallery created with name: ' +
                             newGallery.name });
 
                     } else {
-                        return res.json(500, {message: "Could not create gallery.Error: " + err});
+                        return res.json(500, {message: 'Could not create gallery.Error: ' + err});
                     }
                 });
 
             } else if(!err) {
 
-                return res.json(403, {message: "Gallery with that name already exists,"+
-                    "please update instead of create or create a new gallery with a different name."});
+                return res.json(403, {message: 'Gallery with that name already exists,'+
+                    ' please update instead of create or create a new gallery with a different name.'});
 
             } else {
                 return  res.json(500, { message: err});
@@ -77,9 +78,9 @@ exports.show = function(req, res) {
             if(!err && doc) {
                 res.json(200, doc);
             } else if(err) {
-                res.json(500, { message: "Error loading Categorie." + err});
+                res.json(500, { message: 'Error loading Gallery.' + err});
             } else {
-                res.json(404, { message: "Categorie not found."});
+                res.json(404, { message: 'Gallery not found.'});
             }
         });
 };
@@ -90,11 +91,11 @@ exports.delete = function(req, res) {
     galleryToFind.findById(id, function(err, doc) {
         if(!err && doc) {
             doc.remove();
-            res.json(200, { message: "Gallery removed."});
+            res.json(200, { message: 'Gallery removed.'});
         } else if(!err) {
-            res.json(404, { message: "Could not find Gallery."});
+            res.json(404, { message: 'Could not find Gallery.'});
         } else {
-            res.json(403, {message: "Could not delete Gallery." + err});
+            res.json(403, {message: 'Could not delete Gallery.' + err});
         }
     });
 };
@@ -113,17 +114,17 @@ exports.update = function(req, res) {
             doc.host = gallery_host;
             doc.save(function(err) {
                 if(!err) {
-                    res.json(200, {message: "Gallery updated: " +
+                    res.json(200, {message: 'Gallery updated: ' +
                         gallery_name});
                 } else {
-                    res.json(500, {message: "Could not update Gallery. " +
+                    res.json(500, {message: 'Could not update Gallery. ' +
                         err});
                 }
             });
         } else if(!err) {
-            res.json(404, { message: "Could not find Gallery."});
+            res.json(404, { message: 'Could not find Gallery.'});
         } else {
-            res.json(500, { message: "Could not update Gallery. " +
+            res.json(500, { message: 'Could not update Gallery. ' +
                 err});
         }
     });

@@ -7,14 +7,14 @@ function Gallery(){}
 Gallery.prototype.createDBGallery = function() {
 
     var galleries = new Schema({
-        id : {type: Number , seq:0}
-        , name : { type: String, required: true, index: { unique: true } }
-        , host : { type: String, required: true }
-        , date_created : { type: Date, required: true, default: Date.now}
-        , description : { type: String, required: true }
-        , elements : { type: Number}
-        , views : {type : Number}
-        , path:{type: String}
+        id : {type: Number , seq:0},
+        name : { type: String, required: true, index: { unique: true } },
+        host : { type: String, required: true },
+        date_created : { type: Date, required: true, default: Date.now},
+        description : { type: String, required: true },
+        elements : { type: Number},
+        views : {type : Number},
+        path:{type: String}
     });
 
     if(galleriesModel == undefined){

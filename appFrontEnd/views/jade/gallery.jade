@@ -1,5 +1,4 @@
 extends layout
-
 block content
     .navbar.navbar-fixed-top.navbar-inverse
         .container
@@ -18,24 +17,20 @@ block content
                         a(href='about') About
                     li
                         a(href='contact') Contact
-
     .jumbotron.text-center
         h1 Contestnco
         p.lead  You can create a gallery and add photo !
-        p.btn.btn-lg.btn-success(role='button', href="#modalImage", data-toggle="modal") Add photo
-        p.inline-block or
-        p.btn.btn-lg.btn-primary(role='button', href="#modalGallery", data-toggle="modal") Add gallery
-
-    h2.text-center.text-primary All gallery
-
-    div(ng-controller='IndexTypeCtrl')
+        p.btn.btn-lg.btn-success(role='button', href="#modalImage", data-toggle="modal") Add photo to the gallery
+    h2.text-center.text-primary Images of {{gallery.name}}
+    div(ng-controller='DisplayImagesByGallery')
         .container.marketing
             .row.text-center
-                .col-lg-4(ng-repeat="gallery in galleries")
-                    img.img-circle.set-mini-size(src="http://localhost:8080/upload/galleriePhoto/{{ gallery._id }}")
-                    h2 {{gallery.name}}
-                    p {{gallery.description}}
-                    a.btn.btn-default.marginBottomTen(href='gallery/{{gallery._id}}', role='button') Show
+                .col-lg-4(ng-repeat="image in images")
+                    img.img-circle.set-mini-size(src="http://localhost:8080/upload/images/{{ images._id }}")
+                    h2 {{images.name}}
+                    p {{images.description}}
+
+
 
     #modalImage.modal.fade
         .modal-dialog
@@ -59,23 +54,3 @@ block content
                         .modal-footer
                             button.btn.btn-default(type="button" data-dismiss="modal") Close
                             button.btn.btn-primary(type="submit") Save
-
-    #modalGallery.modal.fade
-        .modal-dialog
-            .modal-content
-                .modal-header
-                    button(type="button", class="close", data-dismiss="modal") x
-                    h3.text-center.text-primary Add gallery
-                .modal-body
-                    div(ng-controller='NewGalleryCtrl')
-                        p.text-center
-                            input.form-control(id='name', name='gallery_name',type='text',placeholder='Name', ng-model='gallery_name')
-                        p.text-center
-                            input.form-control(id='author', name='gallery_host',type='text',placeholder='Host', ng-model='gallery_host')
-                        p.text-center
-                            textarea.form-control(id='description', name='gallery_description',type='text',placeholder='Description', ng-model='gallery_description')
-                        p.text-center
-                            input.form-control(id='image',type='file',placeholder='An image', file-input='file')
-                        .modal-footer
-                            button.btn.btn-default(type="button" data-dismiss="modal") Close
-                            button.btn.btn-primary(ng-click='createGallery()') Save
